@@ -25,36 +25,68 @@ const equals = document.querySelector(".equal-btn");
 
 let displayValue = [];
 let firstInt;
-let secondInt = [];
-let operator;
+let secondInt;
+let operator = null;
 
-// display.innerText = "0";
+display.innerText = "0";
 
 numberBtns.forEach((button) => {
   button.addEventListener("click", (e) => {
-    display.innerText += `${button.innerText}`;
-    displayValue.push(button.innerText);
-    if (firstInt) {
-      secondInt += button.innerText;
+    if (firstInt && operator === null) {
+      display.innerText = firstInt;
+    }
+    if (firstInt && secondInt && operator) {
+      firstInt = operate(operator, parseInt(firstInt), parseInt(secondInt));
+      // secondInt = null;
+      console.log(`firstInt: ${firstInt}`);
+      console.log(`secondInt: ${secondInt}`);
+      console.log(operator);
+      display.innerText += button.innerText;
+      // operator = null;
+    } else if (firstInt) {
+      secondInt = button.innerText;
+      display.innerText += secondInt;
+      // console.log(`firstInt: ${firstInt}`);
+      // console.log(`secondInt: ${secondInt}`);
+      // console.log(operator);
+    } else {
+      display.innerText = button.innerText;
+      firstInt = button.innerText;
+      // console.log(`firstInt: ${firstInt}`);
+      // console.log(`secondInt: ${secondInt}`);
+      // console.log(operator);
     }
   });
 });
 
 operatorBtns.forEach((button) => {
   button.addEventListener("click", (e) => {
-    display.innerText += `${button.innerText}`;
+    display.innerText += button.innerText;
     operator = button.innerText;
-    firstInt = displayValue.join("");
+    console.log(`firstInt: ${firstInt}`);
+    console.log(`secondInt: ${secondInt}`);
+    console.log(operator);
   });
 });
 
 equals.addEventListener("click", (e) => {
-  display.innerText = operate(
-    operator,
-    parseInt(firstInt),
-    parseInt(secondInt)
-  );
-  firstInt = display.innerText;
-  operator = "";
-  secondInt = [];
+  if (secondInt === null) {
+    display.innerText = firstInt;
+    console.log(`firstInt: ${firstInt}`);
+    console.log(`secondInt: ${secondInt}`);
+    console.log(operator);
+  } else {
+    display.innerText = operate(
+      operator,
+      parseInt(firstInt),
+      parseInt(secondInt)
+    );
+
+    firstInt = display.innerText;
+    operator = null;
+    secondInt = null;
+    console.log(`firstInt: ${firstInt}`);
+    console.log(`secondInt: ${secondInt}`);
+    console.log(operator);
+  }
 });
