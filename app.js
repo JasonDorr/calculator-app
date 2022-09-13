@@ -37,7 +37,7 @@ const display = document.querySelector(".display");
 const equals = document.querySelector(".equal-btn");
 const clearBtn = document.querySelector(".clear-btn");
 
-let firstInt;
+let firstInt = [];
 let secondInt;
 let operator = undefined;
 let previousValue;
@@ -46,15 +46,20 @@ display.innerText = "0";
 
 numberBtns.forEach((button) => {
   button.addEventListener("click", (e) => {
-    if (firstInt && operator === undefined) {
+    if (firstInt.length != 0 && operator === undefined) {
+      firstInt.push(button.innerText);
+      firstInt = firstInt.join("");
       display.innerText = firstInt;
-    } else if (firstInt) {
+      console.log("if");
+    } else if (firstInt.length != 0) {
       secondInt = button.innerText;
       display.innerText += secondInt;
       calculate();
+      console.log("else if");
     } else {
       display.innerText = button.innerText;
-      firstInt = button.innerText;
+      firstInt.push(button.innerText);
+      console.log("else");
     }
   });
 });
