@@ -18,75 +18,67 @@ const operate = (operator, a, b) => {
   }
 };
 
+const calculate = () => {
+  firstInt = operate(operator, parseInt(firstInt), parseInt(secondInt));
+  secondInt = undefined;
+  operator = undefined;
+};
+
+const clear = () => {
+  display.innerText = "0";
+  firstInt = undefined;
+  secondInt = undefined;
+  operator = undefined;
+};
+
 const numberBtns = document.querySelectorAll(".number-btn");
 const operatorBtns = document.querySelectorAll(".operator-btn");
 const display = document.querySelector(".display");
 const equals = document.querySelector(".equal-btn");
+const clearBtn = document.querySelector(".clear-btn");
 
-let displayValue = [];
 let firstInt;
 let secondInt;
-let operator = null;
+let operator = undefined;
+let previousValue;
 
 display.innerText = "0";
 
 numberBtns.forEach((button) => {
   button.addEventListener("click", (e) => {
-    if (firstInt && operator === null) {
+    if (firstInt && operator === undefined) {
       display.innerText = firstInt;
-    }
-    if (firstInt && secondInt && operator) {
-      firstInt = operate(operator, parseInt(firstInt), parseInt(secondInt));
-      // secondInt = null;
-      console.log(`firstInt: ${firstInt}`);
-      console.log(`secondInt: ${secondInt}`);
-      console.log(operator);
-      display.innerText += button.innerText;
-      // operator = null;
     } else if (firstInt) {
       secondInt = button.innerText;
       display.innerText += secondInt;
-      // console.log(`firstInt: ${firstInt}`);
-      // console.log(`secondInt: ${secondInt}`);
-      // console.log(operator);
+      calculate();
     } else {
       display.innerText = button.innerText;
       firstInt = button.innerText;
-      // console.log(`firstInt: ${firstInt}`);
-      // console.log(`secondInt: ${secondInt}`);
-      // console.log(operator);
     }
   });
 });
 
 operatorBtns.forEach((button) => {
   button.addEventListener("click", (e) => {
-    display.innerText += button.innerText;
-    operator = button.innerText;
-    console.log(`firstInt: ${firstInt}`);
-    console.log(`secondInt: ${secondInt}`);
-    console.log(operator);
+    if (firstInt && secondInt && operator) {
+      calculate();
+    } else {
+      display.innerText += button.innerText;
+      operator = button.innerText;
+    }
   });
 });
 
 equals.addEventListener("click", (e) => {
-  if (secondInt === null) {
+  if (!secondInt) {
     display.innerText = firstInt;
-    console.log(`firstInt: ${firstInt}`);
-    console.log(`secondInt: ${secondInt}`);
-    console.log(operator);
   } else {
-    display.innerText = operate(
-      operator,
-      parseInt(firstInt),
-      parseInt(secondInt)
-    );
-
+    calculate();
     firstInt = display.innerText;
-    operator = null;
-    secondInt = null;
-    console.log(`firstInt: ${firstInt}`);
-    console.log(`secondInt: ${secondInt}`);
-    console.log(operator);
   }
+});
+
+clearBtn.addEventListener("click", () => {
+  clear();
 });
